@@ -1,3 +1,5 @@
+## Proyecto frontend: https://github.com/Mauri-Godoy/Pokedex-front
+
 # Proyecto Spring Boot con Swagger
 
 Este proyecto utiliza Spring Boot y Swagger para documentar la API REST.
