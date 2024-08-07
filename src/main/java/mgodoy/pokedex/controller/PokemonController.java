@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mgodoy.pokedex.dto.PokemonDto;
@@ -17,7 +18,8 @@ public class PokemonController {
 	private PokemonService service;
 
 	@GetMapping("")
-	public CompletableFuture<List<PokemonDto>> getAll() {
-		return service.getAll();
+	public CompletableFuture<List<PokemonDto>> getAll(@RequestParam(required = false) Integer offset,
+			@RequestParam(required = false) Integer limit) {
+		return service.getAll(offset, limit);
 	}
 }

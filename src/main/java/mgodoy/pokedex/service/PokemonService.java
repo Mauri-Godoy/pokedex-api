@@ -7,6 +7,6 @@ import mgodoy.pokedex.dto.PokemonDto;
 
 public interface PokemonService {
 
-	CompletableFuture<List<PokemonDto>> getAll();
+	CompletableFuture<List<PokemonDto>> getAll(Integer offset, Integer limit);
 
 }

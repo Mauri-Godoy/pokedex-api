@@ -18,8 +18,12 @@ public class PokemonServiceImpl implements PokemonService {
 	private final RestTemplate restTemplate = new RestTemplate();
 
 	@Override
-	public CompletableFuture<List<PokemonDto>> getAll() {
+	public CompletableFuture<List<PokemonDto>> getAll(Integer offset, Integer limit) {
 		String url = Constants.POKEMON_ENDPOINT;
+
+		if (offset != null && limit != null) {
+			url = String.format("%s?offset=%s&limit=%s", url, offset, limit);
+		}
 
 		ResponseEntity<PokemonApiResponseDto> response = restTemplate.getForEntity(url, PokemonApiResponseDto.class);
 
