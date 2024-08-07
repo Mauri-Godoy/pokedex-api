@@ -16,6 +16,7 @@ public class PokemonDto {
 	private Integer id;
 	private Sprites sprites;
 	private Integer weight;
+	private String height;
 	private List<TypeContainer> types;
 	private List<AbilityContainer> abilities;
 	private List<MovesContainer> moves;
