@@ -9,4 +9,6 @@ public interface PokemonService {
 
 	CompletableFuture<List<PokemonDto>> getAll(Integer offset, Integer limit);
 
+	PokemonDto getById(Integer id);
+
 }

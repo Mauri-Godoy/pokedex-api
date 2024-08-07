@@ -41,4 +41,16 @@ public class PokemonServiceImpl implements PokemonService {
 		return CompletableFuture.allOf(pokemonFutures.toArray(new CompletableFuture[0]))
 				.thenApply(v -> pokemonFutures.stream().map(CompletableFuture::join).toList());
 	}
+
+	@Override
+	public PokemonDto getById(Integer id) {
+		String url = Constants.POKEMON_ENDPOINT + "/" + id;
+
+		ResponseEntity<PokemonDto> response = restTemplate.getForEntity(url, PokemonDto.class);
+
+		if (response.getBody() == null)
+			throw new ConflictException("Error al obtener obtener el pokemon con ese identificador.");
+
+		return response.getBody();
+	}
 }
