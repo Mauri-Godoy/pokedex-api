@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class PokemonApiResponseDto {
-    private List<PokemonDto> results;
+    private List<PokemonApiDto> results;
 
 }

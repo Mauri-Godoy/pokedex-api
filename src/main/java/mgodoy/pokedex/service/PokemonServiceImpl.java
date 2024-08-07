@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import mgodoy.pokedex.dto.PokemonApiResponseDto;
 import mgodoy.pokedex.dto.PokemonDto;
+import mgodoy.pokedex.dto.PokemonApiDto;
 import mgodoy.pokedex.dto.PokemonSpeciesDto;
 import mgodoy.pokedex.exception.ConflictException;
 import mgodoy.pokedex.util.Constants;
@@ -32,14 +33,14 @@ public class PokemonServiceImpl implements PokemonService {
 		if (response.getBody() == null)
 			throw new ConflictException("Error al obtener lista de pokemones.");
 
-		List<PokemonDto> pokemons = response.getBody().getResults();
+		List<PokemonApiDto> pokemons = response.getBody().getResults();
 
 		// Obtener los detalles de cada Pokémon de forma asíncrona
 		List<CompletableFuture<PokemonDto>> pokemonFutures = pokemons.stream().map(pokemon -> {
 			return CompletableFuture.supplyAsync(() -> {
-				ResponseEntity<PokemonDto> pokemonResponse = restTemplate.getForEntity(pokemon.getUrl(),
-						PokemonDto.class);
-				return pokemonResponse.getBody();
+				ResponseEntity<PokemonApiDto> pokemonResponse = restTemplate.getForEntity(pokemon.getUrl(),
+						PokemonApiDto.class);
+				return convertToPokemonDto(pokemonResponse.getBody());
 			});
 		}).toList();
 
@@ -67,15 +68,29 @@ public class PokemonServiceImpl implements PokemonService {
 	public PokemonDto getById(Integer id) {
 		String url = Constants.POKEMON_ENDPOINT + "/" + id;
 
-		ResponseEntity<PokemonDto> response = restTemplate.getForEntity(url, PokemonDto.class);
+		ResponseEntity<PokemonApiDto> response = restTemplate.getForEntity(url, PokemonApiDto.class);
 
-		PokemonDto pokemon = response.getBody();
+		PokemonApiDto pokemon = response.getBody();
 
 		if (pokemon == null)
 			throw new ConflictException("Error al obtener obtener el pokemon con ese identificador.");
 
 		pokemon.setDescription(getDescriptionById(id));
 
-		return pokemon;
+		return convertToPokemonDto(pokemon);
+	}
+
+	private PokemonDto convertToPokemonDto(PokemonApiDto apiDto) {
+		PokemonDto dto = new PokemonDto();
+		dto.setId(apiDto.getId());
+		dto.setAbilities(apiDto.getAbilities().stream().map(item -> item.getAbility().getName()).toList());
+		dto.setDescription(apiDto.getDescription());
+		dto.setHeight(apiDto.getHeight());
+		dto.setMoves(apiDto.getMoves().stream().map(item -> item.getMove().getName()).toList());
+		dto.setName(apiDto.getName());
+		dto.setTypes(apiDto.getTypes().stream().map(item -> item.getType().getName()).toList());
+		dto.setUrl(apiDto.getSprites().getFrontDefault());
+		dto.setWeight(apiDto.getWeight());
+		return dto;
 	}
 }
