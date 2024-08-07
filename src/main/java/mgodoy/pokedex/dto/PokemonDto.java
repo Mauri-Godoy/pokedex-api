@@ -16,8 +16,9 @@ public class PokemonDto {
 	private Integer id;
 	private Sprites sprites;
 	private Integer weight;
-	private List<Type> types;
+	private List<TypeContainer> types;
 	private List<AbilityContainer> abilities;
+	private List<MovesContainer> moves;
 	private String description;
 
 	@Getter
@@ -27,6 +28,11 @@ public class PokemonDto {
 
 		@JsonProperty("back_default")
 		private String backDefault;
+	}
+
+	@Getter
+	private static class TypeContainer {
+		private Type type;
 	}
 
 	@Getter
@@ -41,6 +47,16 @@ public class PokemonDto {
 
 	@Getter
 	private static class Ability {
+		private String name;
+	}
+
+	@Getter
+	private static class MovesContainer {
+		private Move move;
+	}
+
+	@Getter
+	private static class Move {
 		private String name;
 	}
 }

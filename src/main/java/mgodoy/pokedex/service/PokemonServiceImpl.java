@@ -37,15 +37,9 @@ public class PokemonServiceImpl implements PokemonService {
 		// Obtener los detalles de cada Pokémon de forma asíncrona
 		List<CompletableFuture<PokemonDto>> pokemonFutures = pokemons.stream().map(pokemon -> {
 			return CompletableFuture.supplyAsync(() -> {
-				// Obtener detalles del Pokémon
 				ResponseEntity<PokemonDto> pokemonResponse = restTemplate.getForEntity(pokemon.getUrl(),
 						PokemonDto.class);
-				PokemonDto pokemonDto = pokemonResponse.getBody();
-
-				// Setear la descripción en el Pokémon
-				pokemonDto.setDescription(getDescriptionById(pokemonDto.getId()));
-
-				return pokemonDto;
+				return pokemonResponse.getBody();
 			});
 		}).toList();
 
