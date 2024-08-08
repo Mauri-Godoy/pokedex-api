@@ -8,4 +8,4 @@ Este proyecto utiliza Spring Boot y Swagger para documentar la API REST.
 
 Una vez que la aplicación esté en funcionamiento, puedes acceder a la documentación de la API generada por Swagger en la siguiente URL:
 
-http://localhost:8080/swagger-ui.html
+https://mgodoy-pokedex-api.fly.dev/swagger-ui.html
